@@ -13,30 +13,37 @@ Proyek ini bertujuan untuk menganalisis penggunaan sepeda berdasarkan data yang 
 ## Cara Menjalankan Dashboard (Setup Environment - VS Code)
 1. Clone Repositori
 
-git clone https://github.com/nspweb/Analisis-Data-Bike-Sharing-Dataset.git
+*git clone https://github.com/nspweb/Analisis-Data-Bike-Sharing.git*
 
 2. Di terminal, buat folder proyek Anda dengan perintah berikut:
 
-cd proyek_analisis_data
+*cd proyek_analisis_data*
 
 3. Siapkan Lingkungan Kerja:
 
 Jika proyek ini memerlukan lingkungan virtual, buat dan aktifkan lingkungan virtual dengan perintah berikut (pastikan kamu sudah menginstal venv):
 
-python -m venv env
-.\env\Scripts\activate  # Untuk PowerShell
+*python -m venv env*
+
+# Untuk PowerShell
+*.\env\Scripts\activate*  
+
 # atau
-.\env\Scripts\activate.bat  # Untuk Command Prompt
+
+# Untuk Command Prompt
+*.\env\Scripts\activate.bat*  
 
 4. Install Dependensi
 Install semua library yang diperlukan dengan menggunakan file requirements.txt:
 
-pip install -r requirements.txt
+*pip install streamlit*
+
+*pip install -r requirements.txt*
 
 5. Jalankan Dashboard
 Jalankan aplikasi Streamlit dengan perintah berikut:
 
-streamlit run dashboard/dashboard.py
+*streamlit run dashboard/dashboard.py*
 
 6. Akses Dashboard
 Buka browser dan akses alamat yang ditampilkan di terminal (biasanya http://localhost:8501).
