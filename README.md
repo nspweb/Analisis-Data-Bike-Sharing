@@ -10,7 +10,9 @@ Proyek ini bertujuan untuk menganalisis penggunaan sepeda berdasarkan data yang 
 - **requirements.txt**: Library yang diperlukan untuk menjalankan proyek.
 - **url.txt**: Tautan untuk mengakses dashboard.
 
-## Cara Menjalankan Dashboard (Setup Environment - VS Code)
+## Cara Menjalankan Dashboard (Setup Environment - Shell/Terminal)
+
+
 1. Clone Repositori
 
 *git clone https://github.com/nspweb/Analisis-Data-Bike-Sharing.git*
