@@ -4,8 +4,8 @@
 Proyek ini bertujuan untuk menganalisis penggunaan sepeda berdasarkan data yang dikumpulkan dari sistem berbagi sepeda. Analisis mencakup faktor-faktor seperti musim, waktu, dan hari kerja versus hari libur.
 
 ## Struktur Folder
-- **dashboard/**: Berisi berkas data dan berkas Python untuk dashboard Streamlit.
-- **data/**: Berisi dataset yang digunakan dalam analisis.
+- **dashboard/**: Berisi berkas Python untuk dashboard Streamlit.
+- **data/**: Berisi dataset yang digunakan dalam analisis dan dataset bersih.
 - **notebook.ipynb**: Berkas Jupyter Notebook yang berisi analisis dan visualisasi.
 - **requirements.txt**: Library yang diperlukan untuk menjalankan proyek.
 - **url.txt**: Tautan untuk mengakses dashboard.
@@ -25,12 +25,12 @@ Jika proyek ini memerlukan lingkungan virtual, buat dan aktifkan lingkungan virt
 
 *python -m venv env*
 
-# Untuk PowerShell
+## Untuk PowerShell
 *.\env\Scripts\activate*  
 
-# atau
+atau
 
-# Untuk Command Prompt
+## Untuk Command Prompt
 *.\env\Scripts\activate.bat*  
 
 4. Install Dependensi
