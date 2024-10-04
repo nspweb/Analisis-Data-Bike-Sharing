@@ -1,9 +1,11 @@
 # Proyek Analisis Data Penggunaan Sepeda
 
 ## Deskripsi Proyek
+
 Proyek ini bertujuan untuk menganalisis penggunaan sepeda berdasarkan data yang dikumpulkan dari sistem berbagi sepeda. Analisis mencakup faktor-faktor seperti musim, waktu, dan hari kerja versus hari libur.
 
 ## Struktur Folder
+
 - **dashboard/**: Berisi berkas Python untuk dashboard Streamlit.
 - **data/**: Berisi dataset yang digunakan dalam analisis dan dataset bersih.
 - **notebook.ipynb**: Berkas Jupyter Notebook yang berisi analisis dan visualisasi.
@@ -12,48 +14,67 @@ Proyek ini bertujuan untuk menganalisis penggunaan sepeda berdasarkan data yang 
 
 ## Cara Menjalankan Dashboard (Setup Environment - Shell/Terminal)
 
+1. Tentukan/sesuaikan Directory tempat Anda akan menyimpan dan menjalankan Proyek. Misal:
 
-1. Clone Repositori
+_C:\Users\Vivobook 15\Desktop_
 
-*git clone https://github.com/nspweb/Analisis-Data-Bike-Sharing.git*
+2. Akses Directory tersebut ke Terminal. Kemudian buat folder proyek Anda dengan perintah berikut:
 
-2. Di terminal, buat folder proyek Anda dengan perintah berikut:
+_mkdir proyek_analisis_data_
 
-*cd proyek_analisis_data*
+3. Setelah folder berhasil terbuat, masuk ke dalam folder tersebut dengan perintah berikut:
 
-3. Siapkan Lingkungan Kerja:
+_cd proyek_analisis_data_
 
-Jika proyek ini memerlukan lingkungan virtual, buat dan aktifkan lingkungan virtual dengan perintah berikut (pastikan kamu sudah menginstal venv):
+4. Clone Repositori:
 
-*python -m venv env*
+_git clone https://github.com/nspweb/Analisis-Data-Bike-Sharing.git_
+
+5. Setelah Repositori berhasil ter-Clone, masuk ke dalam folder lanjutan dari Repositori tersebut dengan perintah berikut:
+
+_cd Analisis-Data-Bike-Sharing_
+
+6. Siapkan Lingkungan Kerja:
+
+Proyek ini memerlukan lingkungan virtual, buat lingkungan virtual dengan perintah berikut:
+
+_python -m venv env_
+
+Kemudian aktifkan lingkungan virtual tersebut dengan perintah berikut:
 
 ## Untuk PowerShell
-*.\env\Scripts\activate*  
+
+_.\env\Scripts\activate_
 
 atau
 
 ## Untuk Command Prompt
-*.\env\Scripts\activate.bat*  
 
-4. Install Dependensi
-Install semua library yang diperlukan dengan menggunakan file requirements.txt:
+_env\Scripts\activate.bat_
 
-*pip install streamlit*
+7. Install Dependensi:
 
-*pip install -r requirements.txt*
+_pip install streamlit_
 
-5. Jalankan Dashboard
+Kemudian lanjut install semua library yang diperlukan dengan menggunakan file requirements.txt:
+
+_pip install -r requirements.txt_
+
+8. Jalankan Dashboard:
+
 Jalankan aplikasi Streamlit dengan perintah berikut:
 
-*streamlit run dashboard/dashboard.py*
+_streamlit run dashboard/dashboard.py_
 
-6. Akses Dashboard
-Buka browser dan akses alamat yang ditampilkan di terminal (biasanya http://localhost:8501).
+9. Akses Dashboard
+   Buka browser dan akses alamat yang ditampilkan di terminal (biasanya http://localhost:8501).
 
 ## Insight
+
 1. Pengaruh Musim: Musim Gugur memiliki jumlah pengguna sepeda tertinggi, sementara Musim Semi mencatat penggunaan terendah, menunjukkan pentingnya faktor cuaca dan kenyamanan.
 2. Dampak Kondisi Cuaca: Cuaca cerah meningkatkan penggunaan sepeda hingga 4.876 pengguna, sedangkan cuaca buruk menurunkan angka tersebut drastis menjadi 1.803 pengguna.
 3. Pola Penggunaan Berdasarkan Waktu: Puncak penggunaan sepeda pada hari kerja terjadi pada pukul 17:00, sementara pada hari libur puncaknya lebih awal di pukul 13:00.
 
 ## Lisensi
+
 Proyek ini dilisensikan di bawah MIT License.
