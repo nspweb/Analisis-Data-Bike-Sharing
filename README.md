@@ -42,13 +42,13 @@ _python -m venv env_
 
 Kemudian aktifkan lingkungan virtual tersebut dengan perintah berikut:
 
-## Untuk PowerShell
+Untuk PowerShell
 
 _.\env\Scripts\activate_
 
 atau
 
-## Untuk Command Prompt
+Untuk Command Prompt
 
 _env\Scripts\activate.bat_
 
