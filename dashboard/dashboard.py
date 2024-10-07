@@ -1,109 +1,109 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
+import matplotlib.pyplot as plt
 
-# Title of the dashboard
+# Load the data
+data = pd.read_csv('data/all_data.csv')
+
+# --- Judul Dashboard ---
 st.title("Bike Sharing Dashboard")
 
-# Load the dataset
-data_path = 'data/all_data.csv'  # Replace with the actual path
-df = pd.read_csv(data_path)
+# Sidebar untuk filter interaktif
+st.sidebar.header("Filter")
 
-# Define the season and weather labels for better readability
-season_labels = {
-    1: 'Winter',
-    2: 'Spring',
-    3: 'Summer',
-    4: 'Fall'
-}
+# 1. Penggunaan Sepeda Berdasarkan Musim
+st.sidebar.subheader("Penggunaan Sepeda Berdasarkan Musim")
+season_options = ['All', 'springer', 'summer', 'fall', 'winter']  # Sesuaikan nama musim di sini
+selected_season = st.sidebar.selectbox("Pilih Musim", season_options)
 
-weather_labels = {
-    1: 'Clear/Few Clouds',
-    2: 'Mist/Cloudy',
-    3: 'Light Snow/Rain',
-    4: 'Heavy Rain/Thunderstorm'
-}
+# 2. Dampak Kondisi Cuaca terhadap Jumlah Pengguna Sepeda
+st.sidebar.subheader("Dampak Kondisi Cuaca")
+weather_options = ['All', 'Clear', 'Mist + Cloudy', 'Light Snow, Light Rain + Thunderstorm']
+selected_weather = st.sidebar.selectbox("Pilih Kondisi Cuaca", weather_options)
 
-# Map the seasons and weather situations to their labels
-df['season_label'] = df['season_day'].map(season_labels)
-df['weather_label'] = df['weathersit_day'].map(weather_labels)
+# 3. Puncak Penggunaan Sepeda Berdasarkan Jam dan Status Hari
+st.sidebar.subheader("Puncak Penggunaan Sepeda Berdasarkan Jam")
+selected_hours = st.sidebar.slider("Pilih Rentang Jam", 0, 23, (0, 23))
 
-# Add user input for selecting season
-st.sidebar.subheader("Filter by Season")
-selected_season = st.sidebar.multiselect(
-    'Choose season(s):', options=df['season_label'].unique(), default=df['season_label'].unique())
+# Mengelompokkan data berdasarkan musim dan menghitung rata-rata
+usage_by_season = data.groupby('season_day').agg({
+    'cnt_day': 'mean',
+    'casual_day': 'mean',
+    'registered_day': 'mean'
+}).reset_index()
 
-# Add user input for selecting weather condition
-st.sidebar.subheader("Filter by Weather Condition")
-selected_weather = st.sidebar.multiselect(
-    'Choose weather condition(s):', options=df['weather_label'].unique(), default=df['weather_label'].unique())
+# Mengganti kode musim dengan nama musim
+season_map = {1: 'springer', 2: 'summer', 3: 'fall', 4: 'winter'}
+usage_by_season['season_day'] = usage_by_season['season_day'].map(season_map)
 
-# Filter the dataframe based on user input
-filtered_df = df[df['season_label'].isin(selected_season) & df['weather_label'].isin(selected_weather)]
+# Menyaring data berdasarkan pilihan musim
+if selected_season != 'All':
+    usage_by_season = usage_by_season[usage_by_season['season_day'] == selected_season]
 
-# Display key summary statistics for filtered data
-st.subheader("Summary of Filtered Data")
-
-# Handle case where the filtered data is empty
-if filtered_df.empty:
-    st.write("No data available for the selected filters.")
+# Mengecek apakah ada data yang tersaring
+st.subheader("Penggunaan Sepeda Berdasarkan Musim")
+if not usage_by_season.empty:
+    # Membuat plot visualisasi
+    plt.figure(figsize=(10, 6))
+    sns.barplot(data=usage_by_season, x='season_day', y='cnt_day', palette='coolwarm')
+    plt.title('Penggunaan Sepeda Berdasarkan Musim', fontsize=16)
+    plt.xlabel('Musim', fontsize=14)
+    plt.ylabel('Jumlah Penggunaan Sepeda', fontsize=14)
+    plt.grid(axis='y', linestyle='--')
+    st.pyplot(plt)
 else:
-    # Calculate total and average usage for the filtered data
-    total_usage = filtered_df['cnt_hour'].sum()
-    average_usage = filtered_df['cnt_hour'].mean()
+    st.write(f"Tidak ada data untuk musim {selected_season}.")
 
-    # Display the summary text
-    st.write(f"Total number of bike uses in the selected filters: **{total_usage:,.0f}**")
-    st.write(f"Average hourly bike usage: **{average_usage:,.2f}** users per hour.")
+# 2. Dampak Kondisi Cuaca terhadap Jumlah Pengguna Sepeda
+st.subheader("Dampak Kondisi Cuaca terhadap Jumlah Pengguna Sepeda")
+usage_by_weather = data.groupby('weathersit_day').agg({
+    'cnt_day': 'mean',
+    'casual_day': 'mean',
+    'registered_day': 'mean'
+}).reset_index()
 
-    # If the user selected only one weather condition, display a specific message about it
-    if len(selected_weather) == 1:
-        st.write(f"Under the weather condition '**{selected_weather[0]}**', the average number of users per hour is **{average_usage:,.2f}**.")
+# Mengganti kode cuaca dengan deskripsi
+weather_map = {
+    1: 'Clear',
+    2: 'Mist + Cloudy',
+    3: 'Light Snow, Light Rain + Thunderstorm',
+}
+usage_by_weather['weathersit_day'] = usage_by_weather['weathersit_day'].map(weather_map)
 
-# #1 Impact of Season on Bike Usage
-st.subheader("Impact of Season on Bike Usage")
+# Menyaring data berdasarkan pilihan cuaca
+if selected_weather != 'All':
+    usage_by_weather = usage_by_weather[usage_by_weather['weathersit_day'] == selected_weather]
 
-# Group by season and calculate average usage
-usage_by_season = filtered_df.groupby('season_label')['cnt_hour'].mean().reset_index()
+# Membuat plot untuk penggunaan sepeda berdasarkan cuaca
+if not usage_by_weather.empty:
+    plt.figure(figsize=(12, 7))
+    sns.barplot(x='weathersit_day', y='cnt_day', data=usage_by_weather, palette='Blues_r')
+    plt.title('Dampak Kondisi Cuaca terhadap Jumlah Pengguna Sepeda', fontsize=18)
+    plt.xlabel('Kondisi Cuaca', fontsize=14)
+    plt.ylabel('Rata-rata Jumlah Pengguna', fontsize=14)
+    plt.grid(axis='y', linestyle='--')
+    st.pyplot(plt)
+else:
+    st.write(f"Tidak ada data untuk kondisi cuaca {selected_weather}.")
 
-# Barplot for bike usage by season
+# 3. Puncak Penggunaan Sepeda Berdasarkan Jam dan Status Hari
+st.subheader("Puncak Penggunaan Sepeda Berdasarkan Jam dan Status Hari")
+data['is_holiday'] = data['holiday_hour'].apply(lambda x: 'Holiday' if x == 1 else 'Working')
+
+peak_usage = data.groupby(['hr', 'is_holiday']).agg({
+    'cnt_hour': 'sum'
+}).reset_index()
+
+# Filter data berdasarkan jam yang dipilih
+peak_usage_filtered = peak_usage[(peak_usage['hr'] >= selected_hours[0]) & (peak_usage['hr'] <= selected_hours[1])]
+
+# Membuat plot untuk penggunaan sepeda pada jam puncak
 plt.figure(figsize=(10, 6))
-sns.barplot(data=usage_by_season, x='season_label', y='cnt_hour', palette='viridis')
-plt.title('Bike Usage by Season', fontsize=16)
-plt.xlabel('Season', fontsize=14)
-plt.ylabel('Average Bike Usage (Hourly)', fontsize=14)
-plt.xticks(rotation=45)
-plt.grid(axis='y')
-
-# Show the plot
+sns.lineplot(data=peak_usage_filtered, x='hr', y='cnt_hour', hue='is_holiday', palette='Set2')
+plt.title('Penggunaan Sepeda pada Jam Puncak', fontsize=16)
+plt.xlabel('Jam', fontsize=14)
+plt.ylabel('Jumlah Pengguna Sepeda', fontsize=14)
+plt.legend(title='Hari Kerja vs Hari Libur')
+plt.grid(True, linestyle='--')
 st.pyplot(plt)
-
-# #2 Impact of Weather Conditions on Bike Usage
-st.subheader("Impact of Weather Conditions on Bike Usage")
-
-# Group by weather condition and calculate average usage
-usage_by_weather = filtered_df.groupby('weather_label')['cnt_hour'].mean().reset_index()
-
-# Barplot for weather condition's impact on bike usage
-plt.figure(figsize=(12, 7))
-
-# Define colors for the bars, highlighting the highest value
-max_value = usage_by_weather['cnt_hour'].max()
-colors = ['darkblue' if val == max_value else 'lightblue' for val in usage_by_weather['cnt_hour']]
-
-# Barplot with custom colors
-sns.barplot(x='weather_label', y='cnt_hour', data=usage_by_weather, palette=colors)
-plt.title('Impact of Weather Conditions on Bike Usage', fontsize=18, weight='bold')
-plt.xlabel('Weather Condition', fontsize=14)
-plt.ylabel('Average Bike Usage (Hourly)', fontsize=14)
-plt.xticks(rotation=45, ha='right', fontsize=12)
-plt.grid(axis='y', linestyle='--', alpha=0.7)
-
-# Adjust layout and show the plot
-plt.tight_layout()
-st.pyplot(plt)
-
-# Show filtered data (optional)
-st.subheader("Filtered Data Preview")
-st.write(filtered_df.head())
